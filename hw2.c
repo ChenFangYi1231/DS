@@ -2,7 +2,7 @@
  * 1. This Program is Developed Solely by Myself: Yes
  * 2. Student ID: 107061207
  * 3. OJ ID: DS2107061207
- * 4. OJ SID: 2186737
+ * 4. OJ SID: 2186779
  * 5. OJ Score: 10
  */
 
@@ -278,14 +278,14 @@ void simulation(struct person *people, int time, int *ICU, int num)
             }
             if(c != 0){     // more than 1 sick neghibors -> infected -> initialize other data
                 people[i].state = 2;
-                people[i].dieCount = 1;
+                people[i].dieCount = 0;
                 people[i].recovery = 14 + 7 * c;
                 people[i].inft = time;
                 people[i].flag = 1;
             }
             else{           // otherwise the person recover
                 people[i].state = 0;
-                people[i].dieCount = 1;
+                people[i].dieCount = 0;
             }
         }
         else if(people[i].state == 3){      // check if a sick person needs to go to ICU
