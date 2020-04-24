@@ -2,7 +2,7 @@
  * 1. This Program is Developed Solely by Myself: Yes
  * 2. Student ID: 107061207
  * 3. OJ ID: DS2107061207
- * 4. OJ SID: 2185461
+ * 4. OJ SID: 2186737
  * 5. OJ Score: 10
  */
 
@@ -98,12 +98,32 @@ void simulation(struct person *people, int time, int *ICU, int num)
         if(people[i].state == 3){
             /* if the person is sick, add recovery time to others according to different infected / sick time */
             if((people[i].inft - time == -2 && people[i].flag == 1) || people[i].flag == 2){
-                r1 = people[i].row - 1;
-                c1 = people[i].col;
-                r2 = people[i].row + 1;
-                r3 = people[i].row ;
-                c3 = people[i].col - 1;
-                c4 = people[i].col + 1;
+				r1 = people[i].row - 1;
+            	c1 = people[i].col;
+            	r2 = people[i].row + 1;
+            	r3 = people[i].row ;
+            	c3 = people[i].col - 1;
+            	c4 = people[i].col + 1;
+				if(people[i].flag == 2){
+					c = 0;
+					for(j = 0; j <= num && people[j].date <= time; j++){
+						if(people[j].row == r1 && people[j].col == c1 && people[j].state == 3 && people[j].inft != time - 1){
+                    		c++;
+                		}
+                		else if(people[j].row == r2 && people[j].col == c1 && people[j].state == 3 && people[j].inft != time - 1){
+                    		c++;
+                		}
+                		else if(people[j].row == r3 && people[j].col == c3 && people[j].state == 3 && people[j].inft != time - 1){
+                    		c++;
+                		}
+                		else if(people[j].row == r3 && people[j].col == c4 && people[j].state == 3 && people[j].inft != time - 1){
+                   			c++;
+                		}
+            		}
+            		if(c != 0){     // calculate sick neighbors for recovery time
+                		people[i].recovery = 14 + 7 * c;
+            		}
+				}
                 for(j = 0; j <= num && people[j].date <= time; j++){
                     if(people[j].row == r1 && people[j].col == c1){
                         if(people[j].state == 3){
@@ -269,7 +289,7 @@ void simulation(struct person *people, int time, int *ICU, int num)
             }
         }
         else if(people[i].state == 3){      // check if a sick person needs to go to ICU
-            if(people[i].recovery >= 28 && (*ICU) > 0){
+            if(people[i].recovery > 28 && (*ICU) > 0){
                 people[i].state = 4;
                 (*ICU) -= 1;
             }
